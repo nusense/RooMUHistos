@@ -7,3 +7,8 @@ MUHDict.h
 madd
 tryToRead
 tryToWrite
+*.gif
+*.png
+*.eps
+*.pdf
+
