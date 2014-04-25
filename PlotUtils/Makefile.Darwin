@@ -1,0 +1,52 @@
+PLOTUTILSROOT=$(shell sh -c 'cd ../; pwd')
+
+CXX = clang++
+CXXFLAGS  = -Wall -fPIC
+CXXFLAGS += -g -fno-inline -O0
+# CXXFLAGS += -O3
+
+ROOTFLAGS = `root-config --cflags --glibs` -lCintex
+ROOTINC = `root-config --cflags`
+
+OBJS = MULatErrorBand.o MULatErrorBand2D.o MULatErrorBand3D.o \
+			 MUVertErrorBand.o MUVertErrorBand2D.o MUVertErrorBand3D.o \
+			 MUH1D.o MUH2D.o MUH3D.o \
+			 MUPlotter.o MUHDict.o HistogramUtils.o MUApplication.o
+
+SRC = MULatErrorBand.cxx MULatErrorBand2D.cxx MULatErrorBand3D.cxx \
+			MUVertErrorBand.cxx MUVertErrorBand2D.cxx MUVertErrorBand3D.cxx \
+			MUH1D.cxx MUH2D.cxx MUH3D.cxx \
+			MUPlotter.cxx MUHDict.cxx HistogramUtils.cxx MUApplication.cxx
+
+INCLUDE += -I$(PLOTUTILSROOT)/PlotUtils
+LDFLAGS += -shared 
+# LDFLAGS += -Wl
+# LDFLAGS += -stdlib=libstdc++
+
+TARGET = libplotutils.so
+
+ROOTDICTCXX = MUHDict.cxx
+ROOTDICTH = MUHDict.h
+ROOTDICTHEADERS = MULatErrorBand.h MULatErrorBand2D.h MULatErrorBand3D.h \
+									MUVertErrorBand.h MUVertErrorBand2D.h MUVertErrorBand3D.h \
+									MUH1D.h MUH2D.h MUH3D.h MUApplication.h
+
+
+$(TARGET): $(OBJS) $(ROOTDICTCXX)
+	@if test -d ../lib; then echo LibOk >& /dev/null ; else mkdir -p ../lib; fi
+	$(CXX) $(LDFLAGS) -o $(TARGET) $(OBJS) $(ROOTFLAGS)
+	mv $(TARGET) ../lib
+
+$(OBJS): %.o: %.cxx %.h
+	@echo $(OBJS)
+	@echo $(SRC)
+	$(CXX) $(CXXFLAGS) $(INCLUDE) $(ROOTINC) -c $< -o $@ 
+
+$(ROOTDICTCXX): $(ROOTDICTHEADERS) Linkdef.h
+	rootcint -f $@ -c $(CXXFLAGS) -p $^
+
+clean:
+	-rm -f *.o
+	-rm -f $(ROOTDICTCXX)
+	-rm -f $(ROOTDICTH)
+	-rm -f ../lib/$(TARGET)
