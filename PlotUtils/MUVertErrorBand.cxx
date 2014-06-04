@@ -427,7 +427,7 @@ void MUVertErrorBand::DrawAll( const char *option /* = "" */, bool drawCV /* = f
 	//! make a copy of cv
 	TH1D* cvcopy = (TH1D*)Clone( Form( "%s_tmp", GetName() ) );
 	cvcopy->SetMinimum( 0 );
-	cvcopy->SetLineWidth( 2.0 );
+	cvcopy->SetLineWidth( 2 );
 	cvcopy->SetFillColor( 0 );
 	cvcopy->SetLineColor( kBlack );
 

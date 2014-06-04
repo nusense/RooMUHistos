@@ -3768,7 +3768,7 @@ void MUPlotter::DrawErrorMatrix(
 		// separate minimum and maximum if they are very close
 		if( (max-min)<0.1 )
 		{
-			int middle = floor( 0.5+(min+max)/2.0 );
+			int middle = (int)floor( 0.5+(min+max)/2.0 );
 			h2D->SetMinimum( middle-0.5 );
 			h2D->SetMaximum( middle+0.5 );
 		}
