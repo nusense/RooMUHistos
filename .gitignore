@@ -2,6 +2,7 @@
 MUHDict.cxx
 MUHDict.h
 *.o
+lib
 
 # Built in macros/
 madd
