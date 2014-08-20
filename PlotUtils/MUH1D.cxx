@@ -1875,9 +1875,9 @@ TH1* MUH1D::Rebin(  Int_t ngroup /*= 2*/, const char *newname /*= ""*/, const Do
   // Call Rebin for all lateral error bands
   for( std::map<std::string, MULatErrorBand*>::iterator it = fLatErrorBandMap.begin(); it != fLatErrorBandMap.end(); ++it )
   {
-    Bool_t ok = it->second->PlotUtils::MULatErrorBand::Rebin( ngroup );
+    TH1 *tmpErrBand = it->second->Rebin( ngroup );
 
-    if( ! ok )
+    if( NULL == tmpErrBand )
     {
       Error("Rebin", "Could not rebin MUH1Ds because Rebin failed for MULatErrorBand %s ", it->first.c_str());
       gErrorIgnoreLevel = oldVerbosity;
@@ -1888,9 +1888,9 @@ TH1* MUH1D::Rebin(  Int_t ngroup /*= 2*/, const char *newname /*= ""*/, const Do
   // Call Rebin for all vertical error bands
   for( std::map<std::string, MUVertErrorBand*>::iterator it = fVertErrorBandMap.begin(); it != fVertErrorBandMap.end(); ++it )
   {
-    Bool_t ok = it->second->PlotUtils::MUVertErrorBand::Rebin( ngroup );
+    TH1 *tmpErrBand = it->second->Rebin( ngroup );
 
-    if( ! ok )
+    if( NULL == tmpErrBand )
     {
       Error("Rebin", "Could not rebin MUH1Ds because Rebin failed for MUVertErrorBand %s ", it->first.c_str());
       gErrorIgnoreLevel = oldVerbosity;
@@ -1901,9 +1901,9 @@ TH1* MUH1D::Rebin(  Int_t ngroup /*= 2*/, const char *newname /*= ""*/, const Do
   // Call Rebin for all uncorrelated errors
   for( std::map<std::string, TH1D*>::iterator it = fUncorrErrorMap.begin(); it != fUncorrErrorMap.end(); ++it )
   {
-    Bool_t ok = it->second->Rebin( ngroup );
+    TH1 *tmpErrBand = it->second->Rebin( ngroup );
 
-    if( ! ok )
+    if( NULL == tmpErrBand )
     {
       Error("Rebin", "Could not rebin MUH1Ds because Rebin failed for uncorrelated error %s ", it->first.c_str());
       gErrorIgnoreLevel = oldVerbosity;
