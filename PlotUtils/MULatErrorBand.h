@@ -151,10 +151,7 @@ namespace PlotUtils
 			Bool_t Add( const MULatErrorBand* h1, const Double_t c1 = 1. );
 
 			//! Rebin this error band
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Woverloaded-virtual" // if we ``use'' the base, the overload is ambiguous
-			Bool_t Rebin( const int ngroup = 2 );
-#pragma clang diagnostic pop
+      TH1* Rebin(Int_t ngroup = 2, const char* newname = "", const Double_t* xbins = 0);
 
 			//! Reset all histograms known to this error band
 			void Reset( Option_t *option = "" );

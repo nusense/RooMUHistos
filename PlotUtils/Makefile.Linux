@@ -20,7 +20,6 @@ SRC = MULatErrorBand.cxx MULatErrorBand2D.cxx MULatErrorBand3D.cxx \
 
 INCLUDE += -I$(PLOTUTILSROOT)/PlotUtils
 LDFLAGS += -shared 
-LDFLAGS += -Wl
 # LDFLAGS += -stdlib=libstdc++
 
 TARGET = libplotutils.so
@@ -33,7 +32,7 @@ ROOTDICTHEADERS = MULatErrorBand.h MULatErrorBand2D.h MULatErrorBand3D.h \
 
 
 $(TARGET): $(OBJS) $(ROOTDICTCXX)
-	@if test -d ../lib; then echo LibOk >& /dev/null ; else mkdir -p ../lib; fi
+	@if test -d ../lib; then echo LibOk > /dev/null 2>&1; else mkdir -p ../lib; fi
 	$(CXX) $(LDFLAGS) -o $(TARGET) $(OBJS) $(ROOTFLAGS)
 	mv $(TARGET) ../lib
 

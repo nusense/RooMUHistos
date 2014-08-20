@@ -615,42 +615,49 @@ Bool_t MUVertErrorBand::Add( const MUVertErrorBand* h1, const Double_t c1 /*= 1.
 	return true;
 }
 
-Bool_t MUVertErrorBand::Rebin( const int ngroup /*= 2*/ )
+TH1* MUVertErrorBand::Rebin(Int_t ngroup /*= 2*/, const char* newname /*= ""*/, const Double_t* xbins /*= 0*/ )
 {
-	//! Call Rebin on the CVHist
-	this->TH1D::Rebin( ngroup );
+  // If a clone is specified or necessary (because bins have been specified) then give up for now
+  if( (newname && strlen(newname) > 0) || xbins )
+  {
+    Error( "Rebin", "MUVertErrorBand's Rebin does not know how to create clones yet.  You can't specify a newname or new xbins." );
+    throw 1;
+  }
 
-	//we only need the rebin warning once
-	const int oldVerbosity = gErrorIgnoreLevel;
-	gErrorIgnoreLevel = kError;
+  //! Call Rebin on the CVHist
+  TH1 *rval	= this->TH1D::Rebin( ngroup );
 
-	//! Call Rebin for all universes
-	for( unsigned int iHist = 0; iHist != fNHists; ++iHist )
-		fHists[iHist]->Rebin( ngroup );
+  //we only need the rebin warning once
+  const int oldVerbosity = gErrorIgnoreLevel;
+  gErrorIgnoreLevel = kError;
 
-	gErrorIgnoreLevel = oldVerbosity;
+  //! Call Rebin for all universes
+  for( unsigned int iHist = 0; iHist != fNHists; ++iHist )
+    fHists[iHist]->Rebin( ngroup );
 
-	return true;
+  gErrorIgnoreLevel = oldVerbosity;
+
+  return rval;
 }
 
 void MUVertErrorBand::Reset( Option_t* option /* = "" */ )
 {
-	//Reset the base
-	this->TH1D::Reset(option);
+  //Reset the base
+  this->TH1D::Reset(option);
 
-	//reset all universes
-	for( std::vector<TH1D*>::iterator i = fHists.begin(); i != fHists.end(); ++i )
-		(*i)->Reset(option);
+  //reset all universes
+  for( std::vector<TH1D*>::iterator i = fHists.begin(); i != fHists.end(); ++i )
+    (*i)->Reset(option);
 }
 
 void MUVertErrorBand::SetBit( UInt_t f, Bool_t set)
 {
-	//Set the base class bit
-	this->TH1D::SetBit(f,set);
+  //Set the base class bit
+  this->TH1D::SetBit(f,set);
 
-	//set all universes' bits
-	for( std::vector<TH1D*>::iterator i = fHists.begin(); i != fHists.end(); ++i )
-		(*i)->SetBit(f,set);
+  //set all universes' bits
+  for( std::vector<TH1D*>::iterator i = fHists.begin(); i != fHists.end(); ++i )
+    (*i)->SetBit(f,set);
 }
 
 #endif

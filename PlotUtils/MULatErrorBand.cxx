@@ -644,10 +644,17 @@ Bool_t MULatErrorBand::Add( const MULatErrorBand* h1, const Double_t c1 /*= 1.*/
   return true;
 }
 
-Bool_t MULatErrorBand::Rebin( const int ngroup /*= 2*/ )
+TH1* MULatErrorBand::Rebin(Int_t ngroup /*= 2*/, const char* newname /*= ""*/, const Double_t* xbins /*= 0*/ )
 {
-  //! Call Rebin ont the CVHist
-  this->TH1D::Rebin( ngroup );
+  // If a clone is specified or necessary (because bins have been specified) then give up for now
+  if( (newname && strlen(newname) > 0) || xbins )
+  {
+    Error( "Rebin", "MULatErrorBand's Rebin does not know how to create clones yet.  You can't specify a newname or new xbins." );
+    throw 1;
+  }
+
+  //! Call Rebin on the CVHist
+  TH1 *rval = this->TH1D::Rebin( ngroup );
 
   //we only need the rebin warning once
   const int oldVerbosity = gErrorIgnoreLevel;
@@ -659,7 +666,7 @@ Bool_t MULatErrorBand::Rebin( const int ngroup /*= 2*/ )
 
   gErrorIgnoreLevel = oldVerbosity;
 
-  return true;
+  return rval;
 }
 
 void MULatErrorBand::Reset( Option_t* option /* = "" */ )
