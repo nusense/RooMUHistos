@@ -15,7 +15,7 @@ from glob import glob
 # decode argument options
 usage = """
 Provide a directory that contains .cxx file, where each file builds its own executable.  Create a Makefile for the directory.
-LDLIBS starts as "-L$(PLOTUTILSROOT)/$(CMTCONFIG) -lplotutils", and you can add the LDLIBS line with the --ld option
+LDLIBS starts as "-L$(PLOTUTILSROOT)/lib -lplotutils", and you can add the LDLIBS line with the --ld option
 INCLUDE starts as "-I$(PLOTUTILSROOT)/", and you can add to the INCLUDE line with the --include option
 """
 formatter = TitledHelpFormatter( max_help_position=22, width = 190 )
@@ -55,9 +55,10 @@ makefile +=\
 """
 CXX = g++
 CXXFLAGS = -g -Wall -fPIC
-ROOTFLAGS = `root-config --cflags --glibs`
+ROOTCFLAGS = `root-config --cflags`
+ROOTLIBS = `root-config --glibs` -lCintex
 INCLUDE += -I$(PLOTUTILSROOT)/ %s
-LDLIBS += -L$(PLOTUTILSROOT)/$(CMTCONFIG) -lplotutils %s
+LDLIBS += -L$(PLOTUTILSROOT)/lib -lplotutils %s
 
 """ % ( opts.include, opts.ldlibs )
 
@@ -74,8 +75,8 @@ for target in targets:
   makefile +=\
 """
 %s.o : %s.cxx
-\t$(CXX) $(INCLUDE) $(CXXFLAGS) $(ROOTFLAGS) -o $*.o $(LDLIBS) -c $*.cxx #compile
-\t$(CXX) $(INCLUDE) $(CXXFLAGS) $(ROOTFLAGS) $(LDLIBS) -o $* $*.o        #link
+\t$(CXX) $(INCLUDE) $(CXXFLAGS) $(ROOTCFLAGS) -o $*.o -c $*.cxx #compile
+\t$(CXX) -o $* $*.o $(ROOTLIBS) $(LDLIBS)        #link
 """ % ( target, target )
 
 #add the clean
