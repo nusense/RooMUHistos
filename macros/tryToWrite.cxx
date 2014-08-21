@@ -67,9 +67,12 @@ int tryToWrite()
   weightsLatB2.reserve( 2 );
   weightsLatC2.reserve(weightsC.size() );
 
+  const size_t nEntries = 10000;
   double cvweight = 1.;
-  for( int i = 0; i < 100000; ++i )
+  for( size_t i = 0; i != nEntries; ++i )
   {
+    if( 0 == i%1000)
+      cout << Form("Filling histograms with entry %zu of %zu", i, nEntries) << endl;
     double val = r.Gaus(5,2);
     while( val < 0 )
       val = r.Gaus(5,2);
