@@ -19,13 +19,26 @@ if [ -z $ROOTSYS ]; then
   return 0
 fi
 
+# Self locate script when sourced
+if [ -z "$BASH_VERSION" ]; then
+  if [ ! -f env_set.sh ]; then
+    echo "ERROR: Could not find absolute path of RooMu."
+    echo "       Your shell may not support this."
+    echo "       Instead you should cd to the directory of this script, then source it."
+    exit 1
+  fi
+  export ROOMU_SYS=$(pwd)
+else
+  export ROOMU_SYS=$(dirname $BASH_ARGV[0])
+fi
+
 if [ $ARCHIT = 'Darwin' ]
 then
-  export DYLD_LIBRARY_PATH=`pwd`/lib:$DYLD_LIBRARY_PATH
-  export DYLD_LIBRARY_PATH=`pwd`/lib:$ROOTSYS/lib
+  export DYLD_LIBRARY_PATH=$ROOMU_SYS/lib:$DYLD_LIBRARY_PATH
+  export DYLD_LIBRARY_PATH=$ROOTSYS/lib:$DYLD_LIBRARY_PATH
 else
-  export LD_LIBRARY_PATH=`pwd`/lib:$LD_LIBRARY_PATH
-  export LD_LIBRARY_PATH=`pwd`/lib:$ROOTSYS/lib
+  export LD_LIBRARY_PATH=$ROOMU_SYS/lib:$LD_LIBRARY_PATH
+  export LD_LIBRARY_PATH=$ROOTSYS/lib:$LD_LIBRARY_PATH
 fi
 
 unset ARCHIT
