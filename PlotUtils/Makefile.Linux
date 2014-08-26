@@ -1,5 +1,3 @@
-PLOTUTILSROOT=$(shell sh -c 'cd ../; pwd')
-
 CXX = g++
 CXXFLAGS  = -Wall -fPIC
 CXXFLAGS += -g -fno-inline -O0
@@ -18,7 +16,7 @@ SRC = MULatErrorBand.cxx MULatErrorBand2D.cxx MULatErrorBand3D.cxx \
 			MUH1D.cxx MUH2D.cxx MUH3D.cxx \
 			MUPlotter.cxx MUHDict.cxx HistogramUtils.cxx MUApplication.cxx
 
-INCLUDE += -I$(PLOTUTILSROOT)/PlotUtils
+INCLUDE += -I$(ROOMU_SYS)/
 LDFLAGS += -shared 
 # LDFLAGS += -stdlib=libstdc++
 
@@ -42,7 +40,7 @@ $(OBJS): %.o: %.cxx %.h
 	$(CXX) $(CXXFLAGS) $(INCLUDE) $(ROOTINC) -c $< -o $@ 
 
 $(ROOTDICTCXX): $(ROOTDICTHEADERS) Linkdef.h
-	rootcint -f $@ -c $(CXXFLAGS) -p $^
+	rootcint -f $@ -c $(CXXFLAGS) $(INCLUDE) -p $^
 
 clean:
 	-rm -f *.o

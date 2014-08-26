@@ -29,7 +29,7 @@ if [ -z "$BASH_VERSION" ]; then
   fi
   export ROOMU_SYS=$(pwd)
 else
-  export ROOMU_SYS=$(dirname $BASH_ARGV[0])
+  export ROOMU_SYS=$(cd $(dirname $BASH_SOURCE[0]);pwd)
 fi
 
 if [ $ARCHIT = 'Darwin' ]
@@ -40,6 +40,8 @@ else
   export LD_LIBRARY_PATH=$ROOMU_SYS/lib:$LD_LIBRARY_PATH
   export LD_LIBRARY_PATH=$ROOTSYS/lib:$LD_LIBRARY_PATH
 fi
+  
+export PATH=$ROOMU_SYS/bin:$PATH
 
 unset ARCHIT
 

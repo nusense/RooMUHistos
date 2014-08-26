@@ -5,9 +5,9 @@
 #include "TString.h"
 #include "TH2D.h"
 #include "TVectorD.h"
-#include "MUH1D.h"
-#include "MUVertErrorBand2D.h"
-#include "MULatErrorBand2D.h"
+#include "PlotUtils/MUH1D.h"
+#include "PlotUtils/MUVertErrorBand2D.h"
+#include "PlotUtils/MULatErrorBand2D.h"
 #include <string>
 #include <vector>
 #include <map>

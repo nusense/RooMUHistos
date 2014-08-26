@@ -1,7 +1,7 @@
 #ifndef MNV_MULatErrorBand_cxx
 #define MNV_MULatErrorBand_cxx 1
 
-#include "MULatErrorBand.h"
+#include "PlotUtils/MULatErrorBand.h"
 
 #include "HistogramUtils.h" //for IsNotPhysicalShift
 #include <algorithm>

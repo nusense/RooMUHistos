@@ -1,7 +1,7 @@
 #ifndef MNV_MUH3D_cxx
 #define MNV_MUH3D_cxx 1
 
-#include "MUH3D.h"
+#include "PlotUtils/MUH3D.h"
 
 using namespace PlotUtils;
 

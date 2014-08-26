@@ -1,0 +1,67 @@
+#!/bin/sh
+
+
+#-------------------------
+# define flags (platform dependence?)
+libdir=$ROOMU_SYS/lib
+libs="-lplotutils"
+cflags="-g -Wall -fPIC -I$ROOMU_SYS/"
+rootcflags=`root-config --cflags`
+rootlibs="`root-config --glibs` -lCintex"
+
+#-------------------------
+# print help
+help()
+{
+  cat<<EOF
+Usage: roomu-config [--prefix] [--cflags] [--libs]
+EOF
+  exit 1
+}
+
+
+#if nothing is given, print help
+if test $# -eq 0 ; then
+  help
+fi
+
+#parse user arguments
+while test $# -gt 0 ; do
+  case "$1" in
+    -*=*)
+      optarg=`echo "$1" | sed 's/[-_a-zA-Z0-9]*=//'`
+      ;;
+    *)
+      optarg=
+      ;;
+  esac
+
+  case "$1" in
+    --prefix)
+      echo $ROOMU_SYS
+      ;;
+
+    --libs)
+      echo "-L${libdir}" ${libs} ${rootlibs}
+      ;;
+
+    --cflags)
+      echo ${cflags} ${rootcflags}
+      ;;
+
+    -?)
+      help
+      ;;
+
+    --help)
+      help
+      ;;
+
+    *)
+      help
+      ;;
+  esac
+
+  shift
+done
+

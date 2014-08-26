@@ -1,4 +1,4 @@
-#include "MUApplication.h"
+#include "PlotUtils/MUApplication.h"
 
 void PlotUtils::Initialize()
 {

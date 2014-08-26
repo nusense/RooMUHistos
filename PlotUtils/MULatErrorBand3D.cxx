@@ -1,7 +1,7 @@
 #ifndef MNV_MULatErrorBand3D_cxx
 #define MNV_MULatErrorBand3D_cxx 1
 
-#include "MULatErrorBand3D.h"
+#include "PlotUtils/MULatErrorBand3D.h"
 #include "HistogramUtils.h"
 #include <algorithm>
 

@@ -1,7 +1,7 @@
 #ifndef MNV_MUH1D_cxx
 #define MNV_MUH1D_cxx 1
 
-#include "MUH1D.h"
+#include "PlotUtils/MUH1D.h"
 #include "HistogramUtils.h"
 
 #include <TMath.h>

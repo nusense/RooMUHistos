@@ -1,7 +1,7 @@
 #ifndef MNV_MUPlotter_cxx
 #define MNV_MUPlotter_cxx 1
 
-#include "MUPlotter.h"
+#include "PlotUtils/MUPlotter.h"
 #include "HistogramUtils.h" //for IsAutoAxisLimit
 
 #include "TROOT.h"

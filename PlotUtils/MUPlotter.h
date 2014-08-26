@@ -1,7 +1,7 @@
 #ifndef MNV_MUPlotter_h
 #define MNV_MUPlotter_h 1
 
-#include "MUH1D.h"
+#include "PlotUtils/MUH1D.h"
 
 #include "TDirectory.h"
 #include "TClass.h"
