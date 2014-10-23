@@ -118,6 +118,23 @@ void MUH1D::DeepCopy( const MUH1D& h )
   std::vector<std::string> uncorrNames = h.GetUncorrErrorNames();
   for( std::vector<std::string>::iterator name = uncorrNames.begin(); name != uncorrNames.end(); ++name )
     fUncorrErrorMap[*name] = new TH1D( *h.GetUncorrError(*name) );
+
+  //copy all "special" error matrices
+  //todo: These were unfortunately named.  There is not always a clear distinction between these "special" error matrices and those derived from error bands.
+  //todo: It's not clear how we want to handle shape only stuff here. GetSysErrorMatricesNames does not include them but that might be fine.
+  std::vector<std::string> allSysNames = h.GetSysErrorMatricesNames();
+  for( std::vector<std::string>::iterator name = allSysNames.begin(); name != allSysNames.end(); ++name )
+  {
+    //this restricts us to only the special matrices
+    if( h.HasErrorMatrix(*name) )
+     fSysErrorMatrix[*name] = new TMatrixD( h.GetSysErrorMatrix(*name) );
+  }
+
+  //add removed "special" error matrices
+  std::vector<std::string> removedSysNames = h.GetRemovedSysErrorMatricesNames();
+  for( std::vector<std::string>::iterator name = removedSysNames.begin(); name != removedSysNames.end(); ++name )
+     fRemovedSysErrorMatrix[*name] = new TMatrixD( h.GetSysErrorMatrix(*name) );
+
 }
 
 //--------------------------------------------------------
