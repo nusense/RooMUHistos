@@ -15,6 +15,10 @@ Once the environment is configured, run `make` in the `PlotUtils` directory
 and then run `make` in the macros directory. Then test the build with 
 `macros/tryToRead` and `macros/tryToWrite`.
 
+Doxygen
+===========
+http://home.fnal.gov/~tice/pages/RooMU/Doxygen/annotated.html
+
 To-Do
 ===========
 
