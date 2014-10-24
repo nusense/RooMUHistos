@@ -6,6 +6,8 @@
 #include "HistogramUtils.h" //for IsNotPhysicalShift
 #include <algorithm>
 
+#include <TDirectory.h>
+
 using namespace PlotUtils;
 
 ClassImp(MULatErrorBand);
@@ -31,6 +33,10 @@ MULatErrorBand::MULatErrorBand( const std::string& name, const TH1D* base, const
       fGoodColors.push_back( i );
   }
 
+  //change to this's directory so children are in the same place
+  const TString oldDir = gDirectory->GetPath();
+  this->GetDirectory()->cd();
+
   for( unsigned int i = 0; i < fNHists; i++ )
   {
     sprintf(tmpName, "%s_universe%d", name.c_str(), i );
@@ -44,6 +50,7 @@ MULatErrorBand::MULatErrorBand( const std::string& name, const TH1D* base, const
 
     fHists.push_back( tmp );
   }
+  gDirectory->cd(oldDir);
 
   if( nHists < 10 )
     fUseSpreadError = true;
@@ -74,6 +81,10 @@ MULatErrorBand::MULatErrorBand( const std::string& name, const TH1D* base, const
       fGoodColors.push_back( i );
   }
 
+  //change to this's directory so children are in the same place
+  const TString oldDir = gDirectory->GetPath();
+  this->GetDirectory()->cd();
+
   std::vector<TH1D*>::const_iterator it = hists.begin();
   int it_pos = 0;
   for( ; it != hists.end(); ++it, ++it_pos )
@@ -88,6 +99,7 @@ MULatErrorBand::MULatErrorBand( const std::string& name, const TH1D* base, const
 
     fHists.push_back( tmp );
   }
+  gDirectory->cd(oldDir);
 
   if( fNHists < 10 )
     fUseSpreadError = true;
@@ -128,8 +140,15 @@ void MULatErrorBand::DeepCopy( const MULatErrorBand& h )
 {
   fUseSpreadError = h.GetUseSpreadError();
   fNHists = h.fNHists;
+
+  //change to this's directory so children are in the same place
+  const TString oldDir = gDirectory->GetPath();
+  this->GetDirectory()->cd();
+
   for( unsigned int i = 0; i < fNHists; ++i )
     fHists.push_back( new TH1D(*h.GetHist(i)) );
+
+  gDirectory->cd(oldDir);
 
   //! meh.
   //set the good colors
