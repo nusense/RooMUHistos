@@ -374,7 +374,6 @@ bool MUH1D::AddVertErrorBand( const std::string& name, const int nhists /* = -1 
   //change to this's directory so children are in the same place
   const TString oldDir = gDirectory->GetPath();
   this->GetDirectory()->cd();
-  gDirectory->cd(oldDir);
 
   // non-positive nhists means you want to use the VertErrorBand's default
   if( nhists > 0 )
