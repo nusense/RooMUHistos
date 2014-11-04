@@ -128,18 +128,34 @@ void MUH1D::DeepCopy( const MUH1D& h )
   //copy all "special" error matrices
   //todo: These were unfortunately named.  There is not always a clear distinction between these "special" error matrices and those derived from error bands.
   //todo: It's not clear how we want to handle shape only stuff here. GetSysErrorMatricesNames does not include them but that might be fine.
+  //
+  // NOTE(JVY): Copy opver also the shape-only matrices. 
+  //            After all, even if they're calculated from bands, why would it hurt to have them copied ???
+  //            We can, of course, discuss and iterate on this some more, but somehow this needs to be fixed.
+  //
   std::vector<std::string> allSysNames = h.GetSysErrorMatricesNames();
   for( std::vector<std::string>::iterator name = allSysNames.begin(); name != allSysNames.end(); ++name )
   {
     //this restricts us to only the special matrices
     if( h.HasErrorMatrix(*name) )
-     fSysErrorMatrix[*name] = new TMatrixD( h.GetSysErrorMatrix(*name) );
+      fSysErrorMatrix[*name] = new TMatrixD( h.GetSysErrorMatrix(*name) );
+    std::string sname = *name + "_asShape";
+    if ( h.HasErrorMatrix( sname ) )
+      fSysErrorMatrix[sname] = new TMatrixD( h.GetSysErrorMatrix(*name,false,true) );
   }
 
   //add removed "special" error matrices
+  //
+  // NOTE(JVY): Same with shape-only as above.
+  //
   std::vector<std::string> removedSysNames = h.GetRemovedSysErrorMatricesNames();
   for( std::vector<std::string>::iterator name = removedSysNames.begin(); name != removedSysNames.end(); ++name )
+  {
      fRemovedSysErrorMatrix[*name] = new TMatrixD( h.GetSysErrorMatrix(*name) );
+     std::string sname = *name + "_asShape";
+     if ( h.HasRemovedErrorMatrix( sname ) )
+        fRemovedSysErrorMatrix[sname] = new TMatrixD( h.GetSysErrorMatrix(*name,false,true) );
+  }
 
   gDirectory->cd(oldDir);
 
