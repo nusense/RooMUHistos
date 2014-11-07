@@ -129,7 +129,7 @@ void MUH1D::DeepCopy( const MUH1D& h )
   //todo: These were unfortunately named.  There is not always a clear distinction between these "special" error matrices and those derived from error bands.
   //todo: It's not clear how we want to handle shape only stuff here. GetSysErrorMatricesNames does not include them but that might be fine.
   //
-  // NOTE(JVY): Copy opver also the shape-only matrices. 
+  // NOTE(JVY): Copy over also the shape-only matrices. 
   //            After all, even if they're calculated from bands, why would it hurt to have them copied ???
   //            We can, of course, discuss and iterate on this some more, but somehow this needs to be fixed.
   //
