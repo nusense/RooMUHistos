@@ -3,8 +3,8 @@ CXXFLAGS  = -Wall -fPIC
 CXXFLAGS += -g -fno-inline -O0
 # CXXFLAGS += -O3
 
-ROOTFLAGS = `root-config --cflags --glibs` -lCintex
-ROOTINC = `root-config --cflags`
+ROOTFLAGS = `$(ROOTSYS)/bin/root-config --cflags --glibs` -lCintex
+ROOTINC = `$(ROOTSYS)/bin/root-config --cflags`
 
 OBJS = MULatErrorBand.o MULatErrorBand2D.o MULatErrorBand3D.o \
 			 MUVertErrorBand.o MUVertErrorBand2D.o MUVertErrorBand3D.o \
