@@ -1,6 +1,6 @@
 CXX = clang++
-CXXFLAGS = `roomu-config --cflags`
-LDLIBS = `roomu-config --libs`
+CXXFLAGS = `$(ROOMU_SYS)/bin/roomu-config --cflags`
+LDLIBS = `$(ROOMU_SYS)/bin/roomu-config --libs`
 
 BINARIES = madd tryToRead tryToWrite
 TARGETS = madd.o tryToRead.o tryToWrite.o
