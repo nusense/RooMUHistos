@@ -6,8 +6,8 @@
 libdir=$ROOMU_SYS/lib
 libs="-lplotutils"
 cflags="-g -Wall -fPIC -I$ROOMU_SYS/"
-rootcflags=`root-config --cflags`
-rootlibs="`root-config --glibs` -lCintex"
+rootcflags=`$ROOTSYS/bin/root-config --cflags`
+rootlibs="`$ROOTSYS/bin/root-config --glibs` -lCintex"
 
 #-------------------------
 # print help
