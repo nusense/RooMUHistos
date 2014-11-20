@@ -40,7 +40,7 @@ $(OBJS): %.o: %.cxx %.h
 	$(CXX) $(CXXFLAGS) $(INCLUDE) $(ROOTINC) -c $< -o $@ 
 
 $(ROOTDICTCXX): $(ROOTDICTHEADERS) Linkdef.h
-	rootcint -f $@ -c $(CXXFLAGS) $(INCLUDE) -p $^
+	$(ROOTSYS)/bin/rootcint -f $@ -c $(CXXFLAGS) $(INCLUDE) -p $^
 
 clean:
 	-rm -f *.o
