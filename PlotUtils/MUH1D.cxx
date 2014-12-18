@@ -108,7 +108,8 @@ void MUH1D::DeepCopy( const MUH1D& h )
 
   //change to this's directory so children are in the same place
   const TString oldDir = gDirectory->GetPath();
-  this->GetDirectory()->cd();
+  if(this->GetDirectory())
+    this->GetDirectory()->cd();
 
 
   // Copy the vert and lat error bands
@@ -151,10 +152,10 @@ void MUH1D::DeepCopy( const MUH1D& h )
   std::vector<std::string> removedSysNames = h.GetRemovedSysErrorMatricesNames();
   for( std::vector<std::string>::iterator name = removedSysNames.begin(); name != removedSysNames.end(); ++name )
   {
-     fRemovedSysErrorMatrix[*name] = new TMatrixD( h.GetSysErrorMatrix(*name) );
-     std::string sname = *name + "_asShape";
-     if ( h.HasRemovedErrorMatrix( sname ) )
-        fRemovedSysErrorMatrix[sname] = new TMatrixD( h.GetSysErrorMatrix(*name,false,true) );
+    fRemovedSysErrorMatrix[*name] = new TMatrixD( h.GetSysErrorMatrix(*name) );
+    std::string sname = *name + "_asShape";
+    if ( h.HasRemovedErrorMatrix( sname ) )
+      fRemovedSysErrorMatrix[sname] = new TMatrixD( h.GetSysErrorMatrix(*name,false,true) );
   }
 
   gDirectory->cd(oldDir);
@@ -301,7 +302,8 @@ bool MUH1D::AddLatErrorBand( const std::string& name, const int nhists /* = -1 *
 
   //change to this's directory so children are in the same place
   const TString oldDir = gDirectory->GetPath();
-  this->GetDirectory()->cd();
+  if(this->GetDirectory())
+    this->GetDirectory()->cd();
 
   // non-positive nhists means you want to use the LatErrorBandDefault
   if( nhists > 0 )
@@ -328,11 +330,12 @@ bool MUH1D::AddLatErrorBand( const std::string& name, const std::vector<TH1D*>& 
 
   //change to this's directory so children are in the same place
   const TString oldDir = gDirectory->GetPath();
-  this->GetDirectory()->cd();
+  if(this->GetDirectory())
+    this->GetDirectory()->cd();
 
   // Set the ErrorBand
   fLatErrorBandMap[name] = new MULatErrorBand( errName, (TH1D*)this, base );
-  
+
   gDirectory->cd(oldDir);
 
   return true;
@@ -389,7 +392,8 @@ bool MUH1D::AddVertErrorBand( const std::string& name, const int nhists /* = -1 
 
   //change to this's directory so children are in the same place
   const TString oldDir = gDirectory->GetPath();
-  this->GetDirectory()->cd();
+  if( this->GetDirectory() )
+    this->GetDirectory()->cd();
 
   // non-positive nhists means you want to use the VertErrorBand's default
   if( nhists > 0 )
@@ -416,11 +420,12 @@ bool MUH1D::AddVertErrorBand( const std::string& name, const std::vector<TH1D*>&
 
   //change to this's directory so children are in the same place
   const TString oldDir = gDirectory->GetPath();
-  this->GetDirectory()->cd();
+  if( this->GetDirectory() )
+    this->GetDirectory()->cd();
 
   // Set the ErrorBand
   fVertErrorBandMap[name] = new MUVertErrorBand( errName, (TH1D*)this, base );
-  
+
   gDirectory->cd(oldDir);
 
   return true;
@@ -779,7 +784,8 @@ bool MUH1D::TransferVertErrorBand( MUH1D *hist, const std::string& errName, bool
     {
       //change to this's directory so children are in the same place
       const TString oldDir = gDirectory->GetPath();
-      this->GetDirectory()->cd();
+      if(this->GetDirectory())
+        this->GetDirectory()->cd();
 
       errBand = new MUVertErrorBand( *myErrBand );
 
@@ -815,7 +821,8 @@ bool MUH1D::TransferLatErrorBand( MUH1D *hist, const std::string& errName, bool 
     {
       //change to this's directory so children are in the same place
       const TString oldDir = gDirectory->GetPath();
-      this->GetDirectory()->cd();
+      if(this->GetDirectory())
+        this->GetDirectory()->cd();
 
       errBand = new MULatErrorBand( *myErrBand );
 

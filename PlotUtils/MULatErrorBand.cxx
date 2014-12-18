@@ -35,7 +35,8 @@ MULatErrorBand::MULatErrorBand( const std::string& name, const TH1D* base, const
 
   //change to this's directory so children are in the same place
   const TString oldDir = gDirectory->GetPath();
-  this->GetDirectory()->cd();
+  if(this->GetDirectory())
+    this->GetDirectory()->cd();
 
   for( unsigned int i = 0; i < fNHists; i++ )
   {
@@ -83,7 +84,8 @@ MULatErrorBand::MULatErrorBand( const std::string& name, const TH1D* base, const
 
   //change to this's directory so children are in the same place
   const TString oldDir = gDirectory->GetPath();
-  this->GetDirectory()->cd();
+  if(this->GetDirectory())
+    this->GetDirectory()->cd();
 
   std::vector<TH1D*>::const_iterator it = hists.begin();
   int it_pos = 0;
@@ -143,7 +145,8 @@ void MULatErrorBand::DeepCopy( const MULatErrorBand& h )
 
   //change to this's directory so children are in the same place
   const TString oldDir = gDirectory->GetPath();
-  this->GetDirectory()->cd();
+  if(this->GetDirectory())
+    this->GetDirectory()->cd();
 
   for( unsigned int i = 0; i < fNHists; ++i )
     fHists.push_back( new TH1D(*h.GetHist(i)) );
