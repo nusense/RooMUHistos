@@ -7,7 +7,9 @@
 //  using PlotUtils.
 //==========================================
 
+#ifdef ROOT5
 #include "Cintex/Cintex.h"
+#endif
 
 namespace PlotUtils
 {

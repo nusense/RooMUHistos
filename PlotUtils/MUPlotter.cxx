@@ -3637,8 +3637,13 @@ void MUPlotter::DrawAllUniverses(
 		++nplot;
 		thePad->cd( nplot );
 		//! copy the MUH1D axes attributes to the error band, so they are propagates to the draw
-		h->GetXaxis()->Copy( *error->GetXaxis() );
-		h->GetYaxis()->Copy( *error->GetYaxis() );
+#ifdef ROOT5
+                h->GetXaxis()->Copy( *error->GetXaxis() );
+                h->GetYaxis()->Copy( *error->GetYaxis() );
+#else
+                h->GetXaxis()->Copy( (TObject&)(*error->GetXaxis()) );
+                h->GetYaxis()->Copy( (TObject&)(*error->GetYaxis()) );
+#endif
 		error->DrawAll( "HIST", true/*draw CV*/, covAreaNormalize, binWidthNormalize ? h->GetNormBinWidth() : 0.0 );//0.0 means do not bin width normalize
 		AddHistoTitle( (*name).c_str() );
 	}
@@ -3650,8 +3655,13 @@ void MUPlotter::DrawAllUniverses(
 		++nplot;
 		thePad->cd(nplot);
 		//! copy the MUH1D axes attributes to the error band, so they are propagates to the draw
-		h->GetXaxis()->Copy( *error->GetXaxis() );
-		h->GetYaxis()->Copy( *error->GetYaxis() );
+#ifdef ROOT5
+                h->GetXaxis()->Copy( *error->GetXaxis() );
+                h->GetYaxis()->Copy( *error->GetYaxis() );
+#else
+                h->GetXaxis()->Copy( (TObject&)(*error->GetXaxis()) );
+                h->GetYaxis()->Copy( (TObject&)(*error->GetYaxis()) );
+#endif
 		error->DrawAll( "HIST", true/*draw CV*/, covAreaNormalize, binWidthNormalize ? h->GetNormBinWidth() : 0.0 );//0.0 means do not bin width normalize
 		AddHistoTitle( (*name).c_str() );
 	}
@@ -3867,7 +3877,11 @@ void MUPlotter::DrawDoubleGausFit(
 			parameters[i] = pars[i];   
 	}
 
+#ifdef ROOT5
 	double* errs = fit->GetParErrors();
+#else
+	const double* errs = fit->GetParErrors();
+#endif
 
 	if( errors != (double*)NULL ) 
 	{
