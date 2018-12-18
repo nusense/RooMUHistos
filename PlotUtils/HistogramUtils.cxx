@@ -1,9 +1,9 @@
 //#############################################################################
 //
 // HistogramFunctions.cpp - these functions are useful for working with ROOT
-//                          histograms.  For example, dividing two histograms 
+//                          histograms.  For example, dividing two histograms
 //                          and assigning binomial errors, or averaging over
-//                          a dimension to reduce the dimensionality by 1. 
+//                          a dimension to reduce the dimensionality by 1.
 //
 //
 // D. Schmitz  October 28, 2005
@@ -20,12 +20,12 @@
 using namespace PlotUtils;
 
 
-bool MUHist::IsNotPhysicalShift( double shift ){ 
+bool MUHist::IsNotPhysicalShift( double shift ){
   return fabs(NotPhysicalShiftNumber - shift) < 1E-6;
 }
 
-bool MUHist::IsAutoAxisLimit( double x ){ 
-  return fabs(AutoAxisLimit - x) < 1E-6; 
+bool MUHist::IsAutoAxisLimit( double x ){
+  return fabs(AutoAxisLimit - x) < 1E-6;
 }
 
 
@@ -49,7 +49,7 @@ double MUHist::GetInterquartileRange( const std::vector<double>& vec ){
 //=============================================================================
 // divide3D( )
 //
-// note that -99 is the flag for a 0 denominator. we need to distinguish this 
+// note that -99 is the flag for a 0 denominator. we need to distinguish this
 // case from the 0 / 4 case, for example.
 // errors are binomial errors!!
 //=============================================================================
@@ -68,8 +68,8 @@ TH3D* MUHist::divide3D( const TH3D *num, const TH3D *den ){
           result->SetBinContent(i,j,k, num->GetBinContent(i,j,k)/den->GetBinContent(i,j,k) );
           double error = sqrt( fabs((num->GetBinContent(i,j,k) * ( 1.0 - num->GetBinContent(i,j,k) / den->GetBinContent(i,j,k) )))) / den->GetBinContent(i,j,k);
           result->SetBinError(i,j,k,error);
-          //cout << i << ", " << j << ", " << k << " = " << num->GetBinContent(i,j,k) << " / " << den->GetBinContent(i,j,k) << " = " 
-          //<< result->GetBinContent(i,j,k) << " +- " << error << endl; 
+          //cout << i << ", " << j << ", " << k << " = " << num->GetBinContent(i,j,k) << " / " << den->GetBinContent(i,j,k) << " = "
+          //<< result->GetBinContent(i,j,k) << " +- " << error << endl;
         }
         else
         {
@@ -88,7 +88,7 @@ TH3D* MUHist::divide3D( const TH3D *num, const TH3D *den ){
 //=============================================================================
 // divide2D( )
 //
-// note that -99 is the flag for a 0 denominator. we need to distinguish this 
+// note that -99 is the flag for a 0 denominator. we need to distinguish this
 // case from the 0 / 4 case, for example.
 // errors are binomial errors!!
 //=============================================================================
@@ -105,8 +105,8 @@ TH2D* MUHist::divide2D( const TH2D *num, const TH2D *den ){
         result->SetBinContent(i,j, num->GetBinContent(i,j)/den->GetBinContent(i,j) );
         double error = sqrt( fabs((num->GetBinContent(i,j) * ( 1.0 - num->GetBinContent(i,j) / den->GetBinContent(i,j) )))) / den->GetBinContent(i,j);
         result->SetBinError(i,j,error);
-        //cout << i << ", " << j << " = " << num->GetBinContent(i,j) << " / " << den->GetBinContent(i,j) << " = " 
-        //<< result->GetBinContent(i,j) << " +- " << error << endl; 
+        //cout << i << ", " << j << " = " << num->GetBinContent(i,j) << " / " << den->GetBinContent(i,j) << " = "
+        //<< result->GetBinContent(i,j) << " +- " << error << endl;
       }
       else
       {
@@ -124,7 +124,7 @@ TH2D* MUHist::divide2D( const TH2D *num, const TH2D *den ){
 //=============================================================================
 // divide1D( )
 //
-// note that -99 is the flag for a 0 denominator. we need to distinguish this 
+// note that -99 is the flag for a 0 denominator. we need to distinguish this
 // case from the 0 / 4 case, for example.
 // errors are binomial errors!!
 //=============================================================================
@@ -139,8 +139,8 @@ MUH1D* MUHist::divide1D( const MUH1D *num, const MUH1D *den ){
       result->SetBinContent(i, num->GetBinContent(i)/den->GetBinContent(i) );
       double error = sqrt( fabs((num->GetBinContent(i) * ( 1.0 - num->GetBinContent(i) / den->GetBinContent(i) )))) / den->GetBinContent(i);
       result->SetBinError(i,error);
-      //cout << i << " = " << num->GetBinContent(i) << " / " << den->GetBinContent(i) << " = " 
-      //<< result->GetBinContent(i) << " +- " << error << endl; 
+      //cout << i << " = " << num->GetBinContent(i) << " / " << den->GetBinContent(i) << " = "
+      //<< result->GetBinContent(i) << " +- " << error << endl;
     }
     else
     {
@@ -164,8 +164,8 @@ TH2D* MUHist::average3D_to_2D( const TH3D *object, const char *axis1, const char
   double* x_bins(0);
   double* y_bins(0);
   double* z_bins(0);
-  char axis3[1];
-  char axes[3];
+  char axis3[2]; // 1 char + \0
+  char axes[4];  // 3 char + \0
 
   if( (0 == strcmp(axis1,"1") && 0 == strcmp(axis2,"2")) || (0 == strcmp(axis1,"2") && 0 == strcmp(axis2,"1")) )
     sprintf( axis3, "3" );
@@ -177,7 +177,7 @@ TH2D* MUHist::average3D_to_2D( const TH3D *object, const char *axis1, const char
   sprintf( axes, "%s%s%s", axis1, axis2, axis3 );
 
   if( 0 == strcmp(axes,"123") )
-  { 
+  {
     xbins = object->GetNbinsX();
     x_bins = new double[xbins+1];
     for( int i = 0; i <= xbins; i++ )
@@ -192,7 +192,7 @@ TH2D* MUHist::average3D_to_2D( const TH3D *object, const char *axis1, const char
       z_bins[i] = object->GetZaxis()->GetBinLowEdge(i+1);
   }
   else if( 0 == strcmp(axes,"132") )
-  { 
+  {
     xbins = object->GetNbinsX();
     x_bins = new double[xbins+1];
     for( int i = 0; i <= xbins; i++ )
@@ -222,7 +222,7 @@ TH2D* MUHist::average3D_to_2D( const TH3D *object, const char *axis1, const char
       z_bins[i] = object->GetZaxis()->GetBinLowEdge(i+1);
   }
   else if( 0 == strcmp(axes,"231") )
-  { 
+  {
     xbins = object->GetNbinsY();
     x_bins = new double[xbins+1];
     for( int i = 0; i <= xbins; i++ )
@@ -252,7 +252,7 @@ TH2D* MUHist::average3D_to_2D( const TH3D *object, const char *axis1, const char
       z_bins[i] = object->GetYaxis()->GetBinLowEdge(i+1);
   }
   else if( 0 == strcmp(axes,"321") )
-  { 
+  {
     xbins = object->GetNbinsZ();
     x_bins = new double[xbins+1];
     for( int i = 0; i <= xbins; i++ )
@@ -331,7 +331,7 @@ TH2D* MUHist::average3D_to_2D( const TH3D *object, const char *axis1, const char
         result->SetBinContent(i,j,sum/(double)count);
         double error = sqrt( errorSum2 ) / count;
         result->SetBinError(i,j, error );
-        //cout << i << ", " << j << " = " << sum << " / " << count << " = " 
+        //cout << i << ", " << j << " = " << sum << " / " << count << " = "
         //<< result->GetBinContent(i,j) << " +- " << error << endl;
       }
       else
@@ -354,7 +354,7 @@ MUH1D* MUHist::average2D_to_1D( const TH2D* object, const char *axis1 ){
   int xbins=0, ybins=0;
   double* x_bins(0);
   double* y_bins(0);
-  char axis2[1];
+  char axis2[2]; // 1 char + \0
 
   if( 0 == strcmp(axis1,"1") )
   {
@@ -415,7 +415,7 @@ MUH1D* MUHist::average2D_to_1D( const TH2D* object, const char *axis1 ){
       result->SetBinContent(i,sum/(double)count);
       double error = sqrt( errorSum2 ) / count;
       result->SetBinError(i,error );
-      //cout << i << " = " << sum << " / " << count << " = " 
+      //cout << i << " = " << sum << " / " << count << " = "
       //<< result->GetBinContent(i) << " +- " << error << endl;
     }
     else
@@ -438,7 +438,7 @@ MUH1D* MUHist::integrate2D_to_1D( const TH2D* object, const char *axis1, const d
   int xbins=0, ybins=0;
   double* x_bins(0);
   double* y_bins(0);
-  char axis2[1];
+  char axis2[2];  // 1 char + \0
 
   if( 0 == strcmp(axis1,"1") )
   {
@@ -483,7 +483,7 @@ MUH1D* MUHist::integrate2D_to_1D( const TH2D* object, const char *axis1, const d
         {
           if( strcmp( option, "omega" ) == 0 )
           {
-            sum += object->GetBinContent(i,j) * 
+            sum += object->GetBinContent(i,j) *
               (cos(object->GetYaxis()->GetBinLowEdge(j)) - cos(object->GetYaxis()->GetBinUpEdge(j))) * mult;
             count++;
             errorSum2 += pow(object->GetBinError(i,j),2) *
@@ -510,7 +510,7 @@ MUH1D* MUHist::integrate2D_to_1D( const TH2D* object, const char *axis1, const d
       result->SetBinContent(i,sum);
       double error = sqrt( errorSum2 );
       result->SetBinError(i,error );
-      //cout << i << " = " << sum << " / " << count << " = " 
+      //cout << i << " = " << sum << " / " << count << " = "
       //<< result->GetBinContent(i) << " +- " << error << endl;
     }
     else
@@ -538,14 +538,14 @@ double MUHist::integrate2D( const TH2D* object, const double mult, const char *o
     {
       if( strcmp( option, "omega" ) == 0 )
       {
-        sum += object->GetBinContent(i,j) * 
+        sum += object->GetBinContent(i,j) *
           object->GetXaxis()->GetBinWidth(i) *
           (cos(object->GetYaxis()->GetBinLowEdge(j)) - cos(object->GetYaxis()->GetBinUpEdge(j))) * mult;
       }
       else
       {
-        sum += object->GetBinContent(i,j) * 
-          object->GetXaxis()->GetBinWidth(i) * 
+        sum += object->GetBinContent(i,j) *
+          object->GetXaxis()->GetBinWidth(i) *
           object->GetYaxis()->GetBinWidth(j) * mult;
       }
     }
@@ -661,6 +661,6 @@ TMatrixD MUHist::GetErrorsAsMatrix( const TH1D *h )
 
 //#############################################################################
 //
-// END 
+// END
 //
 //#############################################################################
